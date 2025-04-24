@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Reaction experiment</title>
+		<!-- JATOS library -->
+		<script src="jatos.js"></script>
+		
+		<!-- jsPsych core from new URL -->
+		<script src="https://vstradag.github.io/imitationInhibition/jspsych-6.1.0/jspsych.js"></script>
+		
+		<!-- Regular plugins -->
+		
+		<script src="https://vstradag.github.io/imitationInhibition/jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+		<script src="https://vstradag.github.io/imitationInhibition/jspsych-6.1.0/plugins/jspsych-html-button-response.js"></script>
+		<script src="https://vstradag.github.io/imitationInhibition/jspsych-6.1.0/plugins/jspsych-fullscreen.js"></script>
+		<script src="https://vstradag.github.io/imitationInhibition/jspsych-6.1.0/plugins/jspsych-call-function.js"></script>
+		
+		<!-- My custom plugins -->
+		
+		<script src="https://vstradag.github.io/imitationInhibition/custom_plugins/jspsych-fixation-image-keyboard-release.js"></script>
+		<script src="https://vstradag.github.io/imitationInhibition/custom_plugins/jspsych-check-response.js"></script>
+
+		<!-- CSS -->
+		
+		<link href="https://vstradag.github.io/imitationInhibition/jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+
+	</head>	
+	<body style="background-color:#D3D3D3;color:black;"></body>
+	<script>
+
+
+////////////////////////
+///  PRE-EXPERIMENT  ///
+////////////////////////
+
+
+	///////////////////////////////////////////
+	///  DEFINING THE PICTURES OF THE TASK  ///
+	///////////////////////////////////////////
+
+//first practice trial pictures
+
+	var practice_N1 = "https://vstradag.github.io/imitationInhibition/imitation-inhibition-pictures/original_task/N1.jpg";
+	var practice_N2 = "https://vstradag.github.io/imitationInhibition/imitation-inhibition-pictures/original_task/N2.jpg";	
+	var fix_cross = "https://vstradag.github.io/imitationInhibition/imitation-inhibition-pictures/original_task/fix_cross.png";
+	
+	
+//second practice trial pictures
+	
+	var practice_fixation = "https://vstradag.github.io/imitationInhibition/imitation-inhibition-pictures/original_task/fix.jpg";
+	var practice_movI_cueI = "https://vstradag.github.io/imitationInhibition/imitation-inhibition-pictures/original_task/movI_cueI.jpg";
+	var practice_movI_cueM = "https://vstradag.github.io/imitationInhibition/imitation-inhibition-pictures/original_task/movI_cueM.jpg";
+	var practice_movM_cueI = "https://vstradag.github.io/imitationInhibition/imitation-inhibition-pictures/original_task/movM_cueI.jpg";
+	var practice_movM_cueM = "https://vstradag.github.io/imitationInhibition/imitation-inhibition-pictures/original_task/movM_cueM.jpg";
+
+
+//experimental phase pictures
+	
+	var fixation = "https://vstradag.github.io/imitationInhibition/imitation-inhibition-pictures/original_task/fix.jpg";
+	var movI_cueI = "https://vstradag.github.io/imitationInhibition/imitation-inhibition-pictures/original_task/movI_cueI.jpg";
+	var movI_cueM = "https://vstradag.github.io/imitationInhibition/imitation-inhibition-pictures/original_task/movI_cueM.jpg";
+	var movM_cueI = "https://vstradag.github.io/imitationInhibition/imitation-inhibition-pictures/original_task/movM_cueI.jpg";		
+	var movM_cueM = "https://vstradag.github.io/imitationInhibition/imitation-inhibition-pictures/original_task/movM_cueM.jpg";
+	var movNo_cueI = "https://vstradag.github.io/imitationInhibition/imitation-inhibition-pictures/original_task/movNo_cueI.jpg";
+	var movNo_cueM = "https://vstradag.github.io/imitationInhibition/imitation-inhibition-pictures/original_task/movNo_cueM.jpg";
+	
+	
+	/////////////////////////////////////////
+	///  DEFINING THE TIMING OF THE TASK  ///
+	/////////////////////////////////////////
+
+//experimental phase
+
+	var time_fixation = 500;
+	var time_stimulus = 2000;	
+	var time_post_trial_gap = 950;	
+	var block_number = 5;	
+	var trial_repetitions = 5;
+
+
+	//////////////////////////////////
+	///  INSTRUCTIONS OF THE TASK  ///
+	//////////////////////////////////
+
+//first practice phase
+
+	var instructions_practice_1 =	"<p>Your task will be to respond as fast as possible to what appears on the screen. </p>" +
+									"<p>During the task, your 'standard position' for each round is to press and hold down both the 'G' and 'H' keys simultaneously:</p>" +
+									"<p>Your RIGHT <b>index finger</b> presses and holds down the <b>'G'</b> key.</p>" +
+									"<p>Your RIGHT <b>middle finger</b> presses and holds down the <b>'H'</b> key.</p></br>" +
+									"<p>Your task: </p><img src='https://vstradag.github.io/imitationInhibition/imitation-inhibition-pictures/original_task/instruct_gif.gif'></img></p>" +
+									"<p>If you see the number <img src='"+practice_N1+"'></img> on the screen, lift your index finger as fast as possible.</p>" +
+									"<p>If you see the number <img src='"+practice_N2+"'></img> on the screen, lift your middle finger as fast as possible.</p>" +
+									"<p>Then, return to your standard position.</p></br>" +
+									"<p>To start a short practice phase, please press and hold down the 'G' and 'H' keys with your RIGHT index and middle fingers.</p>" + 
+									"<p>The practice phase is designed to repeat until you have accomplished 80 percent of the trials.";
+
+	var practice_1_enough_correct_answers = "<p> You got it! </p></br> Press any key to continue.</p>";
+	
+	var practice_1_failed_try = "<p> You've made too many mistakes. </p></br>Remember, your task is to respond as fast as possible to what appears on the screen.</p>" + 
+								"<p>If you see the number <img src='"+practice_N1+"'></img> on the screen, <b>lift</b> your <b>index finger</b> as fast as possible. </p>" +
+								"<p>If you see the number <img src='"+practice_N2+"'></img> on the screen, <b>lift</b> your <b>middle finger</b> as fast as possible.</p></br>" +
+								"<p>Please concentrate and try again.</p> Press and hold down the 'G' and 'H' keys to restart the exercise.</p>";
+
+
+//second practice phase
+	var instructions_practice_2 = 	"<p>In the following rounds you will see a hand of another person in addition to the numbers.</p>" +
+									"<p>Ignore the hand and simply respond to the numbers as before. </p></br>" + 
+									"<p>Remember: Please keep both keys pressed during the whole study. </p>" +
+									"<p>Only lift the index finger when the number <img src='"+practice_N1+"'></img> appears </p>" +
+									"<p>and lift the middle finger when the number <img src='"+practice_N2+"'></img> appears. </p>" +
+									"<p>As soon as you have released a finger, please press and hold down the 'G' and 'H' keys again.</p></br>" +
+									"<p>Before the actual study begins, we will now start a short practice phase. </p>" +
+									"<p>Please note: If you respond too slowly or make too many mistakes, the practice phase will repeat. </p></br>" +
+									"<p>To start the practice phase, please press and hold down the 'G' and 'H' keys with </p>" +
+									"<p>your RIGHT index and middle fingers.</p>";
+					
+	var practice_2_enough_correct_answers = "<p>You got it! Now you can move on to the actual study phase. </p></br> Press any key to continue.</p>";
+	
+	var practice_2_failed_try = "<p>You've made too many mistakes. </p></br>Remember, your task is to respond as fast as possible to what appears on the screen.</p>" + 
+								"<p>If you see the number <img src='"+practice_N1+"'></img> on the screen, <b>lift</b> your <b>index finger</b> as fast as possible. </p>" +
+								"<p>If you see the number <img src='"+practice_N2+"'></img> on the screen, <b>lift</b> your <b>middle finger</b> as fast as possible.</p></br>" + 
+								"<p>Please concentrate and try again. </p></br> To start the practice phase again, please press and hold down the 'G' and 'H' keys with your </p>" +
+								"<p> RIGHT index and middle fingers.</p>";		
+
+
+//experimental phase
+
+		
+	var experimental_instructions = 	"<p>Now the actual study begins.</p>" +
+									"<p>You will no longer get feedback.</p>" +
+									"<p>Therefore, the actual study phase will feel faster than the exercise phase. Don't be surprised.</p></br>" +
+									"<p>Press any key to continue.</p>";
+
+	var experimental_hand_reminder =	"<p>Please remember to respond with your <b>right hand</b> only!</p></br>" +
+										"<p>To begin, please press and hold down the 'G' and 'H' keys with your RIGHT index and middle fingers.</p>";
+
+	var break_text = "<p>You can now take a break as long as you need.</p></br>" +
+					 "<p>To continue, please press and hold down the 'G' and 'H' keys with your RIGHT index and middle fingers.</p>";
+
+	var experimental_block_finished_text =  "<p>The reaction speed task is now finished.</p></br>" +
+											"<p>Press any key to continue.</p>";
+
+
+	var experiment_finished_text = "<p style='font-size:24px;'>All blocks of this task are complete!</p>" +
+									"<p style='font-size:18px;'>We are almost done!</p>";
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+	//////////////////////
+	///  TASK GLOBALS  ///
+	//////////////////////
+		
+//adding subject ID to all trials
+
+	var subject_id = jsPsych.randomization.randomID(15);
+
+	jsPsych.data.addProperties({
+		subject: subject_id,
+	});	
+	  
+		
+//tagging mouse functions
+
+	var no_mouse = {
+		type: 'call-function',
+		func: function(){ 
+			document.querySelector('head').insertAdjacentHTML('beforeend', '<style id="cursor-toggle"> html { cursor: none; } </style>');
+		}
+	};
+
+	var mouse = {
+		type: 'call-function',
+		func: function(){ 
+			document.querySelector('head').insertAdjacentHTML('beforeend', '<style id="cursor-toggle"> html { cursor: default; } </style>');
+		}
+	};
+
+		
+//event functions
+
+	var keys_down = [];
+	
+	function my_keydown(e){
+		my_key = jsPsych.pluginAPI.convertKeyCharacterToKeyCode(e.key) || e.keyCode;
+		if(keys_down[my_key] != true){ 
+			keys_down[my_key] = true;
+		}
+	};
+	
+	function my_keyup(e){
+		my_key = jsPsych.pluginAPI.convertKeyCharacterToKeyCode(e.key) || e.keyCode;
+		keys_down[my_key] = false;
+	};
+	
+	
+//function adding event listeners
+	
+	var add_listeners = {
+		type: 'call-function',
+		func: function(){ 
+			document.addEventListener("keydown", my_keydown, false); 
+			document.addEventListener("keyup", my_keyup, false);
+		}
+	};
+	
+		
+//function removing key listeners
+	
+	var remove_listeners = {
+		type: 'call-function',
+		func: function(){ 
+			document.removeEventListener("keydown", my_keydown, false); 
+			document.removeEventListener("keyup", my_keyup, false);
+		}
+	};
+
+
+//data saving function
+	
+	function saveData(name, data){
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', 'write_data.php'); 
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.send(JSON.stringify({filename: name, filedata: data}));
+	}
+	
+		  
+	//////////////////////////////////////////////////////////
+	////////      TIMELINE, LISTENERS, FULLSCREEN     ////////
+	//////////////////////////////////////////////////////////
+		
+	var timeline = [];
+	
+
+//going into fullscreen mode and hiding mouse
+
+	timeline.push({
+		type: 'fullscreen',
+		fullscreen_mode: true,
+	});
+		
+	timeline.push(no_mouse);
+		
+	
+//adding event listener and keys
+	
+	var index_key = jsPsych.pluginAPI.convertKeyCharacterToKeyCode('g');
+	var middle_key = jsPsych.pluginAPI.convertKeyCharacterToKeyCode('h');
+		
+	timeline.push(add_listeners);
+	
+		
+//left fullscreen?
+	
+	var out_fullscreen;
+	
+		
+//check fullscreen
+	
+	var return_fullscreen = {
+		type: 'fullscreen',
+		message: '<p>You must be in full screen mode to do this experiment. Click the button below to go back to full screen mode.</p>',
+		fullscreen_mode: true
+	};
+	
+	var if_no_fullscreen = {
+		timeline: [mouse, return_fullscreen, no_mouse],
+		conditional_function: function(){		
+			if(out_fullscreen == 1){
+				return true;
+			} else {
+				return false;
+			}
+		}
+	};	
+
+
+	////////////////////////////////////////
+	////////	 CHECK RESPONSES	////////
+	////////////////////////////////////////
+						
+//keys held down checking loop 
+		
+	var no_response = {
+		type: "check-response",
+		stimulus: '<div style="font-size:30px;">PLEASE HOLD DOWN THE G AND H KEYS CONTINUOUSLY</div>',
+		trial_duration: 1
+	};	
+
+	var loop_no_response = {
+		timeline: [no_response],
+		loop_function: function(){	
+			if(keys_down[index_key] == true && keys_down[middle_key] == true){
+				return false;
+			} else {				
+				return true;				
+			}
+		}
+	};
+		
+	var if_no_response = {
+		timeline: [loop_no_response],
+		conditional_function: function(){
+			if(keys_down[index_key] == true && keys_down[middle_key] == true){
+				return false;
+			} else {
+				return true;
+			}
+		}
+	};		
+		
+
+//reminder if no answer was given
+
+	var reminder = {
+		type: "html-keyboard-response",
+		stimulus: '<div style="font-size:30px;">PLEASE LIFT A FINGER AND HOLD IT DOWN AGAIN</div>',
+		choices: [71,72],
+		trial_duration: 6000,
+		post_trial_gap: 950,
+		data: {test_part: 'reminder'}			
+	};
+				
+	var checking_if_finger_was_lifted = {
+		timeline: [reminder],
+		conditional_function: function(){
+		var data = jsPsych.data.get().last(2).values()[0];
+			if(data.key_press == 71 || data.key_press == 72){
+				return false;
+			} else {
+				return true;
+			}
+		}
+	};
+	
+	var checking_if_finger_was_lifted_experimental = {
+		timeline: [reminder],
+		conditional_function: function(){
+		var data = jsPsych.data.get().last(1).values()[0];
+			if(data.key_press == 71 || data.key_press == 72){
+				return false;
+			} else {
+				return true;
+			}
+		}
+	};
+			
+		
+	////////////////////////////////////////
+	////////	 PRACTICE PHASE 1	////////
+	////////////////////////////////////////
+		
+//instructions practice trial 
+
+	var safety_trial_1 = {
+		type: "html-keyboard-response",
+		stimulus: instructions_practice_1,
+		choices: jsPsych.NO_KEYS,
+		trial_duration: 2000
+	};
+		
+	var practice_1_instructions = {
+		type: "html-keyboard-response",
+		stimulus: instructions_practice_1,
+		choices: [71,72]
+	};
+		
+	var second_key_pressed_1 = {
+		type: "html-keyboard-response",
+		stimulus: instructions_practice_1,
+		post_trial_gap: 1000,
+		choices: [71,72]
+	};
+	
+	timeline.push(safety_trial_1, practice_1_instructions, second_key_pressed_1);
+				
+		
+//setting up the trials		
+		
+	var design_practice_1 = [
+		{fixation: fix_cross, stimulus: practice_N1, data: {part: "practice", test_part: "practice_1", con: "N1", correct_response: "g"}},
+		{fixation: fix_cross, stimulus: practice_N2, data: {part: "practice", test_part: "practice_1", con: "N2", correct_response: "h"}},
+	];
+
+
+//setting up the trial count
+		
+	var count_practice_1_trials = 1;
+		
+						
+//practice trial
+	
+	var practice_1_trial = {
+		type: "fixation-image-keyboard-release",			
+		fixation: jsPsych.timelineVariable("fixation"),						
+		stimulus: jsPsych.timelineVariable("stimulus"),
+		choices:[index_key, middle_key],
+		fixation_duration: 500,
+		trial_duration: 2000,
+		post_trial_gap: 0,
+		data: jsPsych.timelineVariable("data"),
+		on_finish: function(data){
+			data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
+			data.practice_trial_count = count_practice_1_trials;
+		}			
+	};
+		
+		
+//set number count practice trials
+		
+	var count_correctResponses_numbers = 0; 
+	
+		
+//feedback trial
+		
+	var practice_1_feedback = {
+		type: 'html-keyboard-response',
+		stimulus: function() {
+			var last_trial_numbers_correct = jsPsych.data.get().last(1).values()[0].correct;
+			if(last_trial_numbers_correct){
+				count_correctResponses_numbers ++;
+				return '<div style="font-size:60px; color: green">CORRECT!</div>';
+			}else{
+				return '<div style="font-size:60px; color: red">WRONG!</div>';
+			}			
+		},
+		choices: jsPsych.NO_KEYS,
+		trial_duration: 1000,
+		post_trial_gap: 950,
+		data: {test_part: 'feedback_practice_1'}
+	};
+				
+
+//practice trial procedure 
+		
+	var run_practice_1 = {
+		timeline: [if_no_response, practice_1_trial, practice_1_feedback, checking_if_finger_was_lifted, if_no_fullscreen],
+		timeline_variables: design_practice_1,
+		randomize_order: true,
+		repetitions: 5
+	};	
+		
+	timeline.push(run_practice_1);
+		
+				
+//debriefing before trial starts over 
+				
+	var debriefing_practice_1 = {
+		type: "html-keyboard-response",
+		stimulus: function() {
+			if (count_correctResponses_numbers >= 8) {
+				return practice_1_enough_correct_answers;
+			} else {
+				count_correctResponses_numbers = 0;
+				return practice_1_failed_try;
+			}
+		},
+		data: {repeat_practice_1: '1'}
+	};
+	
+	timeline.push(debriefing_practice_1);
+
+
+//looping the trial until enough correct answers were given 
+		
+	var run_practice_1_loop = {
+		timeline: [run_practice_1, debriefing_practice_1],
+		loop_function: function(data){
+			var data = jsPsych.data.get().last(1).values()[0];
+			if(count_correctResponses_numbers >= 8) {
+				return false;
+			} else {
+				count_correctResponses_numbers = 0;
+				return true;
+			}
+		}
+	};
+		
+
+//loop is only entered if first practice block got less than 8 correct trials
+		
+	var if_node_run_practice_1_loop = {
+		timeline: [run_practice_1_loop],
+		conditional_function: function(){
+			if (count_correctResponses_numbers >= 8) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+	};
+		
+	timeline.push(if_node_run_practice_1_loop);
+	
+
+	////////////////////////////////////////
+	////////	 PRACTICE PHASE 2	////////
+	////////////////////////////////////////
+		
+//setting up the trials	 
+
+	var design_practice_2 = [
+			{fixation: practice_fixation, stimulus: practice_movI_cueI, data: {part: "practice", test_part: "practice_2", con: "P_C", correct_response: "g"}},
+			{fixation: practice_fixation, stimulus: practice_movI_cueM, data: {part: "practice", test_part: "practice_2", con: "P_IC", correct_response: "h"}},
+			{fixation: practice_fixation, stimulus: practice_movM_cueI, data: {part: "practice", test_part: "practice_2", con: "P_IC", correct_response: "g"}},
+			{fixation: practice_fixation, stimulus: practice_movM_cueM, data: {part: "practice", test_part: "practice_2", con: "P_C", correct_response: "h"}},
+	];
+
+		
+//setting up the trial count
+		
+	var count_practice_2_trials = 1;
+		
+
+//instructions practice trial 
+
+	var safety_trial_2 = {
+		type: "html-keyboard-response",
+		stimulus: instructions_practice_2,
+		choices: jsPsych.NO_KEYS,
+		trial_duration: 2000
+	};
+		
+	var practice_2_instructions = {
+		type: "html-keyboard-response",
+		choices:[71,72],
+		stimulus: instructions_practice_2
+	};
+	
+	var second_key_pressed_2 = {
+		type: "html-keyboard-response",
+		choices:[71,72],
+		stimulus: instructions_practice_2,
+		post_trial_gap: 1000
+	};
+		
+	timeline.push(safety_trial_2, practice_2_instructions, second_key_pressed_2);
+
+
+//trial procedure (same as above)
+						
+	var practice_2_trial = {
+		type: "fixation-image-keyboard-release",			
+		fixation: jsPsych.timelineVariable("fixation"),						
+		stimulus: jsPsych.timelineVariable("stimulus"),
+		choices:[index_key, middle_key],
+		fixation_duration: 500,
+		trial_duration: 2000,
+		post_trial_gap: 0,
+		data: jsPsych.timelineVariable("data"),
+		on_finish: function(data){
+			data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
+			data.practice_trial_count = count_practice_2_trials;
+		}			
+	};
+		
+	var count_correctResponses = 0; 
+			
+	var practice_2_feedback = {
+		type: 'html-keyboard-response',
+		stimulus: function() {
+			var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+			if(last_trial_correct){
+				count_correctResponses ++;
+				return '<div style="font-size:60px; color: green">CORRECT!</div>';
+			}else{
+				return '<div style="font-size:60px; color: red">WRONG!</div>';
+			}			
+		},
+		choices: jsPsych.NO_KEYS,
+		trial_duration: 1000,
+		post_trial_gap: 950,
+		data: {test_part: 'feedback_practice_2'}
+	};
+		
+
+// practice trial procedure 
+		
+	var run_practice_2 = {
+		timeline: [if_no_response, practice_2_trial, practice_2_feedback, checking_if_finger_was_lifted, if_no_fullscreen],
+		timeline_variables: design_practice_2,
+		sample: {
+			type: 'fixed-repetitions',
+			size: 3
+		}
+	};	
+		
+	timeline.push(run_practice_2);
+		
+
+// practice trial loop 
+		
+	var debriefing_practice_2 = {
+		type: "html-keyboard-response",
+		stimulus: function() {
+			if (count_correctResponses >= 8) {
+				return practice_2_enough_correct_answers;
+			} else {
+				count_correctResponses = 0;
+				return 	practice_2_failed_try;
+			}
+		},
+		data: {repeat_practice_2: '1'}
+	};
+
+	timeline.push(debriefing_practice_2);
+
+
+//looping the trial
+		
+	var run_practice_2_loop = {
+		timeline: [run_practice_2, debriefing_practice_2],
+		loop_function: function(data){
+			var data = jsPsych.data.get().last(1).values()[0];
+			if(count_correctResponses >= 8) {
+				return false;
+			} else {
+				count_correctResponses = 0;
+				return true;
+			}
+		}
+	};
+		
+		
+//loop is only entered if first practice block got less than 8 correct trials
+		
+	var if_node_run_practice_2_loop = {
+		timeline: [run_practice_2_loop],
+		conditional_function: function(){
+			if (count_correctResponses >= 8) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+	};
+		
+	timeline.push(if_node_run_practice_2_loop);
+			
+				
+	/////////////////////////////////////////////
+	////////	 EXPERIMENTAL PHASE		/////////
+	/////////////////////////////////////////////
+	
+//declare important variables
+	
+	var i;
+	var nblocks = block_number;	
+	var count_all_trials = 0;
+	var if_no_response = [];
+		
+
+//instructions 
+	
+	var safety_trial_3 = {
+		type: "html-keyboard-response",
+		stimulus: experimental_instructions,
+		choices: jsPsych.NO_KEYS,
+		trial_duration: 2000
+	};
+		
+	var test_instructions = {
+		type: "html-keyboard-response",
+		stimulus: experimental_instructions
+	};
+		
+	timeline.push(safety_trial_3, test_instructions);
+		
+
+//reminder to use only the right hand
+		
+	var hand_reminder_1 = {
+		type: "html-keyboard-response",
+		choices:[71,72],
+		stimulus: experimental_hand_reminder,
+	};
+		
+	var hand_reminder_2 = {
+		type: "html-keyboard-response",
+		choices:[71,72],
+		stimulus: experimental_hand_reminder,
+		post_trial_gap: 500
+	};
+		
+	timeline.push(hand_reminder_1, hand_reminder_2);
+		
+					
+//run blocks
+					
+	for(i = 0; i < nblocks; i++){
+		
+		
+//setting up the trials
+					
+		var experimental_design = [
+			{fixation: fixation, stimulus: movI_cueI, data: {test_part: "test", block: "block"+(i+1), con: "C", correct_response: "g"}},
+			{fixation: fixation, stimulus: movI_cueM, data: {test_part: "test", block: "block"+(i+1), con: "IC", correct_response: "h"}},
+			{fixation: fixation, stimulus: movM_cueI, data: {test_part: "test", block: "block"+(i+1), con: "IC", correct_response: "g"}},
+			{fixation: fixation, stimulus: movM_cueM, data: {test_part: "test", block: "block"+(i+1), con: "C", correct_response: "h"}},
+			{fixation: fixation, stimulus: movNo_cueI, data: {test_part: "test", block: "block"+(i+1), con: "N", correct_response: "g"}},
+			{fixation: fixation, stimulus: movNo_cueM, data: {test_part: "test", block: "block"+(i+1), con: "N", correct_response: "h"}},
+		];
+			
+			
+//general trial structure (similar to the practce trial structure, without feedback)
+		
+		var if_no_response = {
+			timeline: [loop_no_response],
+			conditional_function: function(){
+				if(keys_down[index_key] == true && keys_down[middle_key] == true){
+					count_all_trials ++;
+					return false;
+				} else {
+					count_all_trials ++;
+					return true;
+				}
+			}
+		};		
+				
+		var experimental_trial = {
+				type: "fixation-image-keyboard-release",
+				fixation: jsPsych.timelineVariable("fixation"),
+				stimulus: jsPsych.timelineVariable("stimulus"),
+				fixation_duration: time_fixation,
+				trial_duration: time_stimulus,
+				post_trial_gap: time_post_trial_gap,
+				choices:[71,72],
+				data: jsPsych.timelineVariable("data"),
+				on_finish: function(data){
+					data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
+					data.trial_count_all = count_all_trials;
+				}			
+			};
+			
+							
+//experimental trial procedure
+		
+		var run_experimental_phase = {
+				timeline: [if_no_response, experimental_trial, checking_if_finger_was_lifted_experimental, if_no_fullscreen],
+				timeline_variables: experimental_design,
+				sample: {
+					type: 'fixed-repetitions',
+					size: trial_repetitions
+				}
+		};
+	
+		timeline.push(run_experimental_phase);
+	
+
+//break text and goodbye
+			
+		if(i < (nblocks-1)){ 
+			text_break = {
+				type: "html-keyboard-response",
+				stimulus: break_text,
+				post_trial_gap: 1000,
+				data: {test_part: 'break'}					
+			};
+				
+			timeline.push(text_break);
+			
+			
+		}else{ 
+			text_goodbye = {
+				type: "html-keyboard-response",
+				stimulus: experimental_block_finished_text,
+				data: {test_part: 'goodbye'}		
+			};
+			
+			timeline.push(text_goodbye);		
+			
+			
+		}
+	};
+				
+	///////////////////
+	///  SAVE DATA  ///
+	///////////////////
+	
+	var save_data = {
+		type: 'call-function',
+		func: function(){ 
+			saveData("practice_"+subject_id, jsPsych.data.get().filter({part: 'practice'}).csv());
+			saveData("data_"+subject_id, jsPsych.data.get().filter({test_part: 'test'}).csv());
+		}	
+	}
+	
+	timeline.push(save_data);		
+
+
+
+//tagging the mouse on again
+		
+	timeline.push(mouse);
+
+
+//removing event listeners
+
+	timeline.push(remove_listeners);
+
+
+/////////////////
+///  GOODBYE  ///
+/////////////////
+		
+	var goodbye = {	
+		type: 'html-button-response',
+		stimulus: '',
+		prompt: experiment_finished_text,
+		choices: ['<p>Please, click here to continue</p>'],
+		on_finish: function() {
+			console.log("=== Imitation Inhibition Task Completion State ===");
+			
+			let data = {
+				imitationInhibitionData: jsPsych.data.get().json()
+			};
+			
+			// Get the sequence info from study session data
+			const props = jatos.studySessionData.componentProperties || {
+				currentPosition: 0,
+				nextComponentIds: {}
+			};
+			
+			console.log("Current studySessionData:", JSON.stringify(jatos.studySessionData, null, 2));
+			console.log("Current position:", props.currentPosition);
+			
+			// Simply check if we're at position 0
+			if (props.currentPosition === 0) {
+				// If we're first, go to flanker task
+				console.log("Imitation Inhibition was FIRST task, going to flanker");
+				const nextId = props.nextComponentIds.flankerTask;
+				
+				// Increment position before moving on
+				props.currentPosition++;
+				
+				jatos.submitResultData(data)
+					.then(() => jatos.startComponent(nextId, props))
+					.catch(error => {
+						console.error("Transition failed:", error);
+						return jatos.startComponent(nextId, props);
+					});
+			} else {
+				// If we're not at position 0, go to debrief
+				console.log("Imitation Inhibition was SECOND task, going to debrief");
+				const nextId = props.nextComponentIds.debrief;
+				jatos.submitResultData(data)
+					.then(() => jatos.startComponent(nextId, props))
+					.catch(error => {
+						console.error("Transition failed:", error);
+						return jatos.startComponent(nextId, props);
+					});
+			}
+		}
+	};
+	
+	timeline.push(goodbye);
+	
+//////////////////////////
+///  CLOSE FULLSCREEN  ///
+//////////////////////////
+	
+	var fullscreen_off = {
+		type: 'fullscreen',
+		fullscreen_mode: false
+	};
+
+	timeline.push(fullscreen_off);
+
+////////////////////////
+///  RUN EXPERIMENT  ///
+////////////////////////
+	
+// Add JATOS onLoad function to handle component sequencing
+jatos.onLoad(function() {
+	console.log("=== Imitation Inhibition Task Initialization ===");
+	
+	// Get the sequence info from study session data
+	const props = jatos.studySessionData.componentProperties || {
+		currentPosition: 0,
+		nextComponentIds: {}
+	};
+	
+	console.log("Current studySessionData:", JSON.stringify(jatos.studySessionData, null, 2));
+	console.log("Current position:", props.currentPosition);
+	
+	jsPsych.init({
+		timeline: timeline,
+		on_interaction_data_update: function(){
+			if(jsPsych.data.getInteractionData().last(1).values()[0].event == "fullscreenexit"){
+				out_fullscreen = 1;
+			}else if(jsPsych.data.getInteractionData().last(1).values()[0].event == "fullscreenenter"){
+				out_fullscreen = 0;
+			}
+		},
+		preload_images: [practice_N1, practice_N2, fix_cross, practice_fixation, practice_movI_cueI, practice_movI_cueM, practice_movM_cueI, practice_movM_cueM, fixation, movI_cueI, movI_cueM, movM_cueM, movM_cueI, movNo_cueI, movNo_cueM],
+		show_preload_progress_bar: true,		
+	});
+});
+
+	
+	
+	</script>
+</html>
