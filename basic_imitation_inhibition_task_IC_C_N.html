@@ -822,40 +822,40 @@
 				imitationInhibitionData: jsPsych.data.get().json()
 			};
 			
-			// Get the sequence info from study session data
-			const props = jatos.studySessionData.componentProperties || {
-				currentPosition: 0,
-				nextComponentIds: {}
-			};
-			
-			console.log("Current studySessionData:", JSON.stringify(jatos.studySessionData, null, 2));
-			console.log("Current position:", props.currentPosition);
-			
-			// Simply check if we're at position 0
-			if (props.currentPosition === 0) {
-				// If we're first, go to flanker task
-				console.log("Imitation Inhibition was FIRST task, going to flanker");
-				const nextId = props.nextComponentIds.flankerTask;
-				
-				// Increment position before moving on
-				props.currentPosition++;
-				
-				jatos.submitResultData(data)
-					.then(() => jatos.startComponent(nextId, props))
-					.catch(error => {
-						console.error("Transition failed:", error);
-						return jatos.startComponent(nextId, props);
-					});
+			// Only attempt JATOS submission & navigation if jatos is defined
+			if (typeof jatos !== "undefined") {
+				// Get the sequence info from study session data
+				const props = jatos.studySessionData.componentProperties || {
+					currentPosition: 0,
+					nextComponentIds: {}
+				};
+				console.log("Current studySessionData:", JSON.stringify(jatos.studySessionData, null, 2));
+				console.log("Current position:", props.currentPosition);
+
+				// Decide next component based on position
+				if (props.currentPosition === 0) {
+					console.log("Imitation Inhibition was FIRST task, going to flanker");
+					const nextId = props.nextComponentIds.flankerTask;
+					props.currentPosition++;
+					jatos.submitResultData(data)
+						.then(() => jatos.startComponent(nextId, props))
+						.catch(error => {
+							console.error("Transition failed:", error);
+							return jatos.startComponent(nextId, props);
+						});
+				} else {
+					console.log("Imitation Inhibition was SECOND task, going to debrief");
+					const nextId = props.nextComponentIds.debrief;
+					jatos.submitResultData(data)
+						.then(() => jatos.startComponent(nextId, props))
+						.catch(error => {
+							console.error("Transition failed:", error);
+							return jatos.startComponent(nextId, props);
+						});
+				}
 			} else {
-				// If we're not at position 0, go to debrief
-				console.log("Imitation Inhibition was SECOND task, going to debrief");
-				const nextId = props.nextComponentIds.debrief;
-				jatos.submitResultData(data)
-					.then(() => jatos.startComponent(nextId, props))
-					.catch(error => {
-						console.error("Transition failed:", error);
-						return jatos.startComponent(nextId, props);
-					});
+				// Stand‐alone run: nothing to submit
+				console.log("JATOS not available — experiment finished.");
 			}
 		}
 	};
